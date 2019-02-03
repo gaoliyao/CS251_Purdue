@@ -13,7 +13,6 @@ void read_part_1()
 {
     // TODO: Part1 : Create stack
     Stack stack = Stack();
-    cout<<"Task 1"<<endl;
     string str;
     getline(inputfile, str);
     int time;
@@ -28,15 +27,19 @@ void read_part_1()
             int a, b;
             convert >> a;
             convert >> b;
-            cout<<a<<" | "<<b<<endl;
             Pair p(a, b);
             stack.push(p);
             // stack.print()
         }
         else {
-            Pair p = stack.pop();
-            // stack.print();
-            cout<<p.getNum1()<<" "<<p.getNum2()<<endl;
+            if (stack.isEmpty()) {
+                outputfile << "empty" << endl;
+            }
+            else {
+                Pair p = stack.pop();
+                // stack.print();
+                outputfile<<p.getNum1()<<" "<<p.getNum2()<<endl;
+            }
         }
     }
 }
@@ -109,7 +112,21 @@ void read_part_2()
         cout<<"not found"<<endl;
     }
     else{
-        wordStack.print();
+        Stack reverseStack = Stack();
+        int index = wordStack.peek()->data.getIndex();
+        while (!wordStack.isEmpty()) {
+            if (wordStack.peek()->data.getIndex() == index) {
+                reverseStack.push(wordStack.pop());
+                index--;
+            }
+            else {
+                wordStack.pop();
+            }
+        }
+        while (!reverseStack.isEmpty()) {
+            Pair p = reverseStack.pop();
+            outputfile << p.getNum1() << " " << p.getNum2() << endl;
+        }
         cout<<"found"<<endl;
     }
 }
@@ -122,6 +139,8 @@ void read_part_3()
     int lineMax = 0;
     inputfile >> lineMax;
     for (int i = 0; i < lineMax; i++) {
+        cout << "before operation: " << endl;
+        deque.print();
         char c1;
         inputfile >> c1;
         if (c1 == 'e'){
@@ -130,11 +149,13 @@ void read_part_3()
             if (c2 == 'f') {
                 int num;
                 inputfile >> num;
+                cout << "e f " << num << endl;
                 deque.enqueue_front(num);
             }
             if (c2 == 'b') {
                 int num;
                 inputfile >> num;
+                cout << "e b " << num << endl;
                 deque.enqueue_back(num);
             }
 
@@ -143,21 +164,26 @@ void read_part_3()
             char c2;
             inputfile >> c2;
             if (c2 == 'f') {
-                cout << deque.dequeue_front() << endl;
+                cout << "d f ";
+                outputfile << deque.dequeue_front() << endl;
             }
             if (c2 == 'b') {
-                cout << deque.dequeue_back() << endl;
+                cout << "d b ";
+                outputfile << deque.dequeue_back() << endl;
             }
         }
         else if (c1 == 's') {
-            cout << "s" << endl;
-            deque.print_array_size();
-            deque.print_front_index();
-            deque.print_rear_index();
+            cout << "s ";
+            outputfile << deque.print_array_size() << " ";
+            outputfile << deque.print_front_index() << " ";
+            outputfile << deque.print_rear_index() << endl;
         }
         else {
 
         }
+        cout << "after operation: " << endl;
+        deque.print();
+        cout << "================" << endl;
     }
 }
 
