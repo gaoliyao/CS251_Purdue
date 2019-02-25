@@ -114,24 +114,19 @@ void read_part_3()
       if (c == 'i') {
          // cout << "Before put" << endl;
          // table.print();
-         cout << "insert" << endl;
          int v;
          inputfile >> v;
          heap.insert(v);
          // cout << "After put" << endl;
          // table.print();
-         heap.print();
       }
       if (c == 'r') {
          int v;
          inputfile >> v;
-         cout << "remove" << endl;
          // cout << "get " << k << endl;
          heap.removeMin();
-         heap.print();
       }
       if (c == 'm') {
-         cout << "get min" << endl;
          int r = heap.min();
          if (r == 0) {
             cout << "empty" << endl;
@@ -141,14 +136,12 @@ void read_part_3()
          }
       }
       if (c == 's') {
-         cout << "get sorted" << endl;
          int size = heap.size();
          int list[heap.size()];
          int index = 0;
          while (!heap.empty()) {
             list[index] = heap.min();
             heap.removeMin();
-            heap.print();
             index ++;
          }
          for (int i = 0; i < size; i++) {
@@ -187,7 +180,7 @@ int main(int argc, char *argv[])
            break;
    }
 
-	
-	return 0;
+   
+   return 0;
 }
 
