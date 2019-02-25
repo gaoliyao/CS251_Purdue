@@ -28,10 +28,10 @@ void read_part_1()
          inputfile >> v;
          int r = table.put(k, v);
          if (r == -100) {
-            cout << "null" << endl;
+            outputfile << "null" << endl;
          }
          else {
-            cout << r << endl;
+            outputfile << r << endl;
          }
          // cout << "After put" << endl;
          // table.print();
@@ -42,10 +42,10 @@ void read_part_1()
          // cout << "get " << k << endl;
          int r = table.get(k);
          if (r == -100) {
-            cout << "null" << endl;
+            outputfile << "null" << endl;
          }
          else {
-            cout << r << endl;
+            outputfile << r << endl;
          }
       }
       if (c == 'r') {
@@ -57,41 +57,41 @@ void read_part_1()
          inputfile >> v;
          int r = table.replace(k, v);
          if (r == -100) {
-            cout << "null" << endl;
+            outputfile << "null" << endl;
          }
          else {
-            cout << r << endl;
+            outputfile << r << endl;
          }
          // cout << "After replace" << endl;
          // table.print();
       }
       if (c == 's') {
-         cout << table.size() << endl;
+         outputfile << table.size() << endl;
       }
       if (c == 'c') {
          string k;
          inputfile >> k;
          if (table.contains(k)) {
-            cout << 1 << endl;
+            outputfile << 1 << endl;
          }
          else {
-            cout << 0 << endl;
+            outputfile << 0 << endl;
          }
       }
       if (c == 'm') {
          int i;
          inputfile >> i;
-         cout << table.getCollision(i) << endl;
+         outputfile << table.getCollision(i) << endl;
       }
       if (c == 'd') {
          string k;
          inputfile >> k;
          int r = table.remove(k);
          if (r == -100) {
-            cout << "null" << endl;
+            outputfile << "null" << endl;
          }
          else {
-            cout << r << endl;
+            outputfile << r << endl;
          }
       }
    }
@@ -110,6 +110,7 @@ void read_part_3()
    while (lineNum--) {
       char c;
       inputfile >> c;
+      cout << c << endl;
       // cout << "enter" << endl;
       if (c == 'i') {
          // cout << "Before put" << endl;
@@ -121,18 +122,17 @@ void read_part_3()
          // table.print();
       }
       if (c == 'r') {
-         int v;
-         inputfile >> v;
-         // cout << "get " << k << endl;
          heap.removeMin();
       }
       if (c == 'm') {
+         cout << "enter" << endl;
          int r = heap.min();
+         cout << r << endl;
          if (r == 0) {
-            cout << "empty" << endl;
+            outputfile << "empty" << endl;
          }
          else {
-            cout << r << endl;
+            outputfile << r << endl;
          }
       }
       if (c == 's') {
@@ -145,7 +145,7 @@ void read_part_3()
             index ++;
          }
          for (int i = 0; i < size; i++) {
-            cout << list[i] << endl;
+            outputfile << list[i] << endl;
          }
       }
    }
@@ -180,6 +180,8 @@ int main(int argc, char *argv[])
            break;
    }
 
+   inputfile.close();
+   outputfile.close();
    
    return 0;
 }
