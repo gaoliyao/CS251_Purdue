@@ -9,6 +9,9 @@
 
 HashTable::HashTable(){
     //todo
+    this->currentSize = 0;
+    this->maxCollision = 0;
+    this->hash =
 }
 
 int HashTable::size() const{
@@ -20,16 +23,16 @@ bool HashTable::empty() const{
 Entry HashTable::get(const K& k) const{
     //todo
 }
-void HashTable::put(const K& k, const V& v); {
+void HashTable::put(const K& k, const V& v) {
     //todo
 }
 void HashTable::replace(const K& k, const V&v){
     //todo
 }
-void HashTable::remove(const K& k); {
+void HashTable::remove(const K& k) {
     //todo
 }
-bool HashTable::containsKey(const K& k); {
+bool HashTable::containsKey(const K& k) {
     //todo
 }
 

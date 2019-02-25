@@ -7,8 +7,11 @@
 
 #ifndef HashTable_h
 #define HashTable_h
+#include <iostream>
+#include <stdio.h>
 #include <vector>
 #include <list>
+using namespace std;
 
 template <typename K, typename V>
 class Entry {    // a (key, value) pair
@@ -29,7 +32,7 @@ template <typename K, typename V>
 class HashTable {
 public:
     class Entry; // a (key, value) pair
-    Hashtable(); //constructor
+    HashTable(); //constructor
     int size() const; // number of entries in the table
     bool empty() const;
     Entry get(const K& k) const; // find entry with key k

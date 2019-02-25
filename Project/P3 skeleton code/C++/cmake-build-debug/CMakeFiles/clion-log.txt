@@ -1,0 +1,4 @@
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/Users/mars/Documents/GitHub/CS251/Project/P3 skeleton code/C++"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/mars/Documents/GitHub/CS251/Project/P3 skeleton code/C++/cmake-build-debug
