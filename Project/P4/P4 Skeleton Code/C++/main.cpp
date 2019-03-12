@@ -16,11 +16,10 @@ void read_part_1(ifstream &inputfile, ofstream &outputfile)
     if (type == 1) {
         int lineNum = -1;
         inputfile >> lineNum;
-        lineNum += 1;
         Rhymer rhymer = Rhymer();
         while (lineNum--) {
             string temp;
-            getline(inputfile, temp);
+            inputfile >> temp;
             rhymer.addWord(temp);
         }
         rhymer.print();
@@ -30,6 +29,27 @@ void read_part_1(ifstream &inputfile, ofstream &outputfile)
         rhymer.print();
         rhymer.reverseWordContent();
         rhymer.print();
+    }
+    if (type == 2) {
+        int k = -1;
+        inputfile >> k;
+        int lineNum = -1;
+        inputfile >> lineNum;
+        Rhymer rhymer = Rhymer();
+        while (lineNum--) {
+            string temp;
+            inputfile >> temp;
+            rhymer.addWord(temp);
+        }
+        rhymer.print();
+        rhymer.reverseWordContent();
+        rhymer.print();
+        rhymer.quickSort();
+        rhymer.print();
+        rhymer.reverseWordContent();
+        rhymer.print();
+        rhymer.generateGroups();
+        rhymer.printGroups(k);
     }
 }
 
