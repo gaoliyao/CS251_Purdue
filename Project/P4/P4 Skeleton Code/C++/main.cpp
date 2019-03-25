@@ -49,6 +49,8 @@ void read_part_1(ifstream &inputfile, ofstream &outputfile)
         rhymer.reverseWordContent();
         rhymer.print();
         rhymer.generateGroups();
+        rhymer.printGroups();
+        cout << endl;
         rhymer.printGroups(k);
     }
 }
@@ -56,7 +58,11 @@ void read_part_1(ifstream &inputfile, ofstream &outputfile)
 
 void read_part_2(ifstream &inputfile, ofstream &outputfile)
 {
-    //handle input, output from file
+    int lineNum = -1;
+    inputfile >> lineNum;
+    string operation;
+    inputfile >> operation;
+    
 }
 
 int main(int argc, char *argv[])
