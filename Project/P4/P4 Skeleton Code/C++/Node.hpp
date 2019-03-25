@@ -20,21 +20,21 @@ public:
         parent = NULL;
         left = NULL;
         right = NULL;
-        color = -1;
+        color = 0;
     }
     Node(int k) {
         key = k;
         parent = NULL;
         left = NULL;
         right = NULL;
-        color = -1;
+        color = 0;
     }
     Node(int k, Node *p) {
         key = k;
         parent = p;
         left = NULL;
         right = NULL;
-        color = -1;
+        color = 0;
     }
     Node(int k, int c) {
         key = k;

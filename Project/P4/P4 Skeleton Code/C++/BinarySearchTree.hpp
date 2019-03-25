@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include<stdlib.h>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -12,63 +13,86 @@ enum Color {RED, BLACK};
 
 class BinarySearchTree
 {
-    Node *root;
+    
 
     //add necessary constructors and methods following the provided documents
 public:
+    Node *root;
+    int max;
     BinarySearchTree() {
         root = NULL;
+        max = 0;
     }
     BinarySearchTree(int k) {
         root = new Node(k);
+        max = 0;
     }  
     BinarySearchTree(int k, int c) {
         root = new Node(k, BLACK);
+        max = 0;
     }  
 
     void insertKey(int key) {
-        Node *cur = root;
-        while(1) {
-            if (key <= cur->getKey()) {
-                if (cur->getLeft() == NULL) {
-                    Node *n = new Node(key, cur);
-                    break;
-                }
-                else {
-                    cur = cur->getLeft();
-                }
-            }
-            else {
-                if (cur->getRight() == NULL) {
-                    Node *n = new Node(key, cur);
-                    break;
-                }
-                else {
-                    cur = cur->getRight();
-                }
-            }
+        // Node *cur = root;
+        // if (key > max) {
+        //     max = key;
+        // }
+        // if (root == NULL) {
+        //     root = new Node(key);
+        //     return ;
+        // }
+        // while(1) {
+        //     if (key <= cur->getKey()) {
+        //         if (cur->getLeft() == NULL) {
+        //             Node *n = new Node(key, cur);
+        //             break;
+        //         }
+        //         else {
+        //             cur = cur->getLeft();
+        //         }
+        //     }
+        //     else {
+        //         if (cur->getRight() == NULL) {
+        //             Node *n = new Node(key, cur);
+        //             break;
+        //         }
+        //         else {
+        //             cur = cur->getRight();
+        //         }
+        //     }
+        // }
+        if (key > max) {
+            max = key;
         }
+        if (this->root == NULL) {
+            this->root = new Node(key);;
+            return ;
+        }
+        Node *pt = new Node(key);
+        BSTInsert(this->root, pt);
+        // cout << "new root: " << endl;
+        // cout << this->root->key << endl;
     }
 
-    Node* BSTInsert(Node* root, Node *pt) {
+    Node* BSTInsert(Node* curr, Node *pt) {
         /* If the tree is empty, return a new node */
-        if (root == NULL) 
+        if (curr == NULL) 
             return pt; 
     
         /* Otherwise, recur down the tree */
-        if (pt->key < root->key) 
+        if (pt->key < curr->key) 
         { 
-            root->left  = BSTInsert(root->left, pt); 
-            root->left->parent = root; 
+            curr->left  = BSTInsert(curr->left, pt); 
+            curr->left->parent = curr; 
         } 
-        else if (pt->key > root->key) 
+        else if (pt->key > curr->key) 
         { 
-            root->right = BSTInsert(root->right, pt); 
-            root->right->parent = root; 
+            curr->right = BSTInsert(curr->right, pt); 
+            curr->right->parent = curr; 
         } 
     
         /* return the (unchanged) node pointer */
-        return root; 
+        return curr; 
     }
 
     void deleteKey(int key) {
@@ -146,6 +170,7 @@ public:
                 cur = cur->getRight();
             }
             else {
+                // cout << cur->key << endl;
                 return cur;
             }
         }
@@ -227,6 +252,7 @@ public:
         vector<Node*> fl;
         fl.resize(0);
         fl.push_back(root);
+        curList.push_back(fl);
         int height = 0;
         while(curList[height].size() != 0) {
             height++;
@@ -259,13 +285,16 @@ public:
         vector<int> parListB;
         parListA.resize(0);
         parListB.resize(0);
-        while (a != NULL) {
+        while (a->getParent() != NULL) {
             a = a->getParent();
             parListA.push_back(a->getKey());
         }
-        while (b != NULL) {
+        while (b->getParent() != NULL) {
             b = b->getParent();
             parListB.push_back(b->getKey());
+        }
+        if (parListA.size() == 0 || parListB.size() == 0) {
+            return root->key;
         }
         for (int i = 0; i < parListB.size(); i++) {
             for (int j = 0; j < parListA.size(); j++) {
@@ -283,10 +312,23 @@ public:
                 return i;
             }
         }
+        return -1;
+    }
+
+    int Ceil(int key) {
+        for (int i = key; i <= max; i++) {
+            if (searchKey(i)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     int dist(int key1, int key2) {
         int lcaKey = LCA(key1, key2);
+        if (lcaKey == -1) {
+            return -1;
+        }
         Node *sameP = searchKey(lcaKey, 1);
         int h1 = height(key1, sameP);
         int h2 = height(key2, sameP);
@@ -446,6 +488,7 @@ public:
             if (cur->getColor() == 0) {
                 bHeight++;
             }
+            cur = cur->left;
         }
         return bHeight;
     }
