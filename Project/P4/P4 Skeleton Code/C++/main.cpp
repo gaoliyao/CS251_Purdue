@@ -23,13 +23,14 @@ void read_part_1(ifstream &inputfile, ofstream &outputfile)
             inputfile >> temp;
             rhymer.addWord(temp);
         }
-        rhymer.print();
+        // rhymer.print();
         rhymer.reverseWordContent();
-        rhymer.print();
+        // rhymer.print();
         rhymer.quickSort();
-        rhymer.print();
+        // rhymer.print();
         rhymer.reverseWordContent();
-        rhymer.print();
+        outputfile << rhymer.print();
+        // rhymer.printMap();
     }
     if (type == 2) {
         int k = -1;
@@ -42,17 +43,19 @@ void read_part_1(ifstream &inputfile, ofstream &outputfile)
             inputfile >> temp;
             rhymer.addWord(temp);
         }
-        rhymer.print();
+        // rhymer.print();
         rhymer.reverseWordContent();
-        rhymer.print();
+        // rhymer.print();
         rhymer.quickSort();
-        rhymer.print();
+        // rhymer.print();
         rhymer.reverseWordContent();
         rhymer.print();
-        rhymer.generateGroups();
-        rhymer.printGroups();
-        cout << endl;
-        rhymer.printGroups(k);
+        cout << "generateMap" << endl;
+        rhymer.generateMap();
+        // cout << rhymer.printMap() << endl;
+        string output = rhymer.printMap(k);
+        // cout << output << endl;
+        outputfile << output;
     }
 }
 
@@ -92,6 +95,7 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
                 cout << "deletion failed" << endl;
             }
             else {
+                tree.deleteKey(key);
                 cout << "deleted" << endl;;
             }
             // cout << "3" << endl;

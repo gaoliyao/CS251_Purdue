@@ -6,46 +6,10 @@
 #include<stdlib.h>
 #include <vector>
 #include <string>
+#include <map>
+#include <set>
 
 using namespace std;
-
-class Group
-{
-public:
-    Group(int l, int s) {
-        length = l;
-        str_index = s;
-        words.resize(l);
-    }
-    Group(int str) {
-        length = 0;
-        str_index = str;
-        words.resize(0);
-    }
-    void add(string str) {
-        length += 1;
-        words.push_back(str);
-    }
-    int getLength() {
-        return words.size();
-    }
-    string head() {
-        return words[0];
-    }
-    int getStrIndex() {
-        return str_index;
-    }
-    void print() {
-        for (int i = 0; i < length; i++) {
-            cout << words[i] << ", ";
-        }
-        cout << endl;
-    }
-private:
-    vector<string> words;
-    int length;
-    int str_index;
-};
 
 class Rhymer
 {
@@ -114,82 +78,126 @@ public:
         return (i + 1); 
     }
 
-    void generateGroups() {
-        cout << "generate" << endl;
-        int str_index = 1;
-        int i = 0;
-        while (i < wordList.size() - 1) {
-            cout << i << endl;
-            if (str_index >= wordList[i].size()) {
-                str_index = 1;
-                i++;
+    void generateMap() {
+        int sublen = 0;
+        for (int i = 0; i < wordList.size(); i++) {
+            int wordlen = wordList[i].length();
+            if (sublen >= wordlen) {
+                sublen = 1;
+                continue;
             }
-            Group g = Group(str_index);
-            g.add(wordList[i]);
-            string sub_str = wordList[i].substr(wordList[i].length()-1-str_index);
-            for (int j = i + 1; j < length; j++) {
-                if (wordList[j].length() >= sub_str.length()) {
-                    if (sub_str.compare(wordList[j].substr(wordList[j].length()-1-str_index)) == 0) {
-                        cout << "Add" << endl;
-                        g.add(wordList[j]);
-                    }
+            string key = wordList[i].substr(wordlen - 1 - sublen);
+            set<string> wordSet;
+            wordSet.insert(wordList[i]);
+            for (int j = i + 1; j < wordList.size(); j++) {
+                if (sublen < wordList[j].length() && wordList[j].substr(wordList[j].length() - 1 - sublen) == key) {
+                    wordSet.insert(wordList[j]);
+                }
+                else {
+                    break;
                 }
             }
-            groupList.push_back(g);
-            if (g.getLength() == 1) {
-                str_index = 1;
-                i++;
+            // printSet(wordSet);
+            if (wordSet.size() != 1) {
+                i--;
+                sublen++;
+                if (contains(key) == false) {
+                    wordMap.insert(std::make_pair(key, wordSet));
+                }
+                continue;
             }
             else {
-                str_index++;
+                sublen = 0;
             }
         }
     }
 
-    void print() {
-        cout << "print" << endl;
-        for (int i = 0; i < length; i++) {
-            cout << wordList[i] << endl;
+    bool contains(string key) {
+        map<string,set<string>>::const_iterator it = wordMap.find(key);
+        if(it != wordMap.end()) {
+            return true; // do something with value corresponding to the key
+        }
+        return false;
+    }
+    
+    string printMap() {
+        // cout << "Hi" << endl;
+        string output = "";
+        map<string, set<string>>::iterator it;
+        for(it = wordMap.begin(); it != wordMap.end(); it++) {
+            cout << it->second.size() << endl;
+            if (it->second.size() >= 0) {
+                string key = it->first;
+                output += key;
+                output += " -> [";
+                int count = 0;
+                for (set<string>::iterator iter=it->second.begin(); iter!=it->second.end(); ++iter) {
+                    if (count == 0) {
+                        count++;
+                    }
+                    if(count == 1) {
+                        output+= (*iter );
+                        count++;
+                    }
+                    else {
+                        output += (", " + *iter);
+                        count++;
+                    }
+                }
+                output += "]\n";
+            }
+        }
+        return output;
+    }
+
+    void printSet(set<string> s) {
+        for (set<string>::iterator iter=s.begin(); iter!=s.end(); ++iter) {
+                    if (iter == s.begin()) {
+                        cout << (*iter);
+                    }
+                    cout << ", " << *iter;
         }
         cout << endl;
     }
-
-    void printGroups() {
-        int max_length = -1;
-        for (int i = 0; i < groupList.size(); i++) {
-            if (groupList[i].getStrIndex() > max_length) {
-                max_length = groupList[i].getStrIndex();
-            }
-        }
-        for (int i = 0; i < max_length; i++) {
-            for (int j = 0; j < groupList.size(); j++) {
-                if (groupList[j].getStrIndex() == i) {
-                    cout << groupList[j].head().substr(groupList[j].head().length()-1-i) << " - ";
-                    groupList[j].print();
+    string printMap(int k) {
+        // cout << wordMap.size() << endl;
+        string output = "";
+        map<string, set<string>>::iterator it;
+        for(it = wordMap.begin(); it != wordMap.end(); it++) {
+            cout << it->second.size() << endl;
+            if (it->second.size() >= k) {
+                string key = it->first;
+                output += key;
+                output += " -> [";
+                int count = 0;
+                for (set<string>::iterator iter=it->second.begin(); iter!=it->second.end(); ++iter) {
+                    if (count == 0) {
+                        count++;
+                    }
+                    if(count == 1) {
+                        output+= (*iter );
+                        count++;
+                    }
+                    else {
+                        output += (", " + *iter);
+                        count++;
+                    }
                 }
+                output += "]\n";
             }
         }
+        return output;
     }
-
-    void printGroups(int k) {
-        int max_length = -1;
-        for (int i = 0; i < groupList.size(); i++) {
-            if (groupList[i].getStrIndex() > max_length) {
-                max_length = groupList[i].getStrIndex();
-            }
+    string print() {
+        string output = "";
+        for (int i = 0; i < length; i++) {
+            output += wordList[i] + "\n";
         }
-        for (int i = k; i <= max_length; i++) {
-            for (int j = 0; j < groupList.size(); j++) {
-                if (groupList[j].getStrIndex() == i) {
-                    cout << groupList[j].head().substr(groupList[j].head().length()-1-i) << " - ";
-                    groupList[j].print();
-                }
-            }
-        }
+        return output;
     }
 private: 
     vector<string> wordList;
-    vector<Group> groupList;
+    map<string, set<string>> wordMap;
     int length;
 };
 
