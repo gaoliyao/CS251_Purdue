@@ -50,7 +50,6 @@ void read_part_1(ifstream &inputfile, ofstream &outputfile)
         // rhymer.print();
         rhymer.reverseWordContent();
         rhymer.print();
-        cout << "generateMap" << endl;
         rhymer.generateMap();
         // cout << rhymer.printMap() << endl;
         string output = rhymer.printMap(k);
@@ -81,10 +80,10 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
             int key = -1;
             inputfile >> key;
             if (tree.searchKey(key) == false) {
-                cout << "none" << endl;
+                outputfile << "none\n";
             }
             else {
-                cout << tree.height(key) << endl;;
+                outputfile << tree.height(key) << endl;
             }
             // cout << "2" << endl;
         }
@@ -92,11 +91,11 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
             int key = -1;
             inputfile >> key;
             if (tree.searchKey(key) == false) {
-                cout << "deletion failed" << endl;
+                outputfile << "deletion failed" << endl;
             }
             else {
                 tree.deleteKey(key);
-                cout << "deleted" << endl;;
+                outputfile << "deleted" << endl;;
             }
             // cout << "3" << endl;
         }
@@ -104,10 +103,10 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
             int key = -1;
             inputfile >> key;
             if (tree.searchKey(key) == false) {
-                cout << "not found" << endl;
+                outputfile << "not found" << endl;
             }
             else {
-                cout << "found" << endl;
+                outputfile << "found" << endl;
             }
             // cout << "4" << endl;
         }
@@ -116,21 +115,31 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
             inputfile >> a >> b;
             int reValue = tree.rangeSum(a, b);
             if (reValue == 0) {
-                cout << "none" << endl;
+                outputfile << "none" << endl;
             }
             else {
-                cout << reValue << endl;
+                outputfile << reValue << endl;
             }
             // cout << "5" << endl;
         }
         if (operation == "postorder") {
-            tree.postorder();
-            cout << endl;
+            if (tree.postorder() == "") {
+                outputfile << "none";
+            }
+            else {
+                outputfile << tree.postorder();
+            }
+            outputfile << endl;
             // cout << "6" << endl;
         }
         if (operation == "levelorder") {
-            tree.levelorder();
-            cout << endl;
+            if (tree.levelorder() == "") {
+                outputfile << "none";
+            }
+            else {
+                outputfile << tree.levelorder();
+            }
+            outputfile << endl;
             // cout << "7" << endl;
         }
         if (operation == "lca") {
@@ -139,10 +148,10 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
             inputfile >> b;
             int reValue = tree.LCA(a, b);
             if (reValue == -1) {
-                cout << "none" << endl;
+                outputfile << "none" << endl;
             }
             else {
-                cout << reValue << endl;
+                outputfile << reValue << endl;
             }
             // cout << "8" << endl;
         }
@@ -151,10 +160,10 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
             inputfile >> a;
             int reValue = tree.Ceil(a);
             if (reValue == -1) {
-                cout << "none" << endl;
+                outputfile << "none" << endl;
             }
             else {
-                cout << reValue << endl;
+                outputfile << reValue << endl;
             }
             // cout << "9" << endl;
         }
@@ -163,10 +172,10 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
             inputfile >> a;
             int reValue = tree.Floor(a);
             if (reValue == -1) {
-                cout << "none" << endl;
+                outputfile << "none" << endl;
             }
             else {
-                cout << reValue << endl;
+                outputfile << reValue << endl;
             }
             // cout << "10" << endl;
         }
@@ -175,10 +184,10 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
             inputfile >> a >> b;
             int reValue = tree.dist(a, b);
             if (reValue == -1) {
-                cout << "none" << endl;
+                outputfile << "none" << endl;
             }
             else {
-                cout << reValue << endl;
+                outputfile << reValue << endl;
             }
             // cout << "11" << endl;
         }
@@ -192,10 +201,10 @@ void read_part_2(ifstream &inputfile, ofstream &outputfile)
             int a = -1;
             inputfile >> a;
             if (tree.searchKey(a) == false) {
-                cout << "none" << endl;
+                outputfile << "none" << endl;
             }
             else {
-                cout << tree.getBlackHeight(a) << endl;
+                outputfile << tree.getBlackHeight(a) << endl;
             }
             // cout << "13" << endl;
         }
@@ -232,6 +241,9 @@ int main(int argc, char *argv[])
             read_part_2(inputfile,outputfile);
             break;
     }
+
+    inputfile.close();
+    outputfile.close();
 
 
     return 0;

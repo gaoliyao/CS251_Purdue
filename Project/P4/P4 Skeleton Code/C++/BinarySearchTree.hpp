@@ -69,7 +69,7 @@ public:
             return ;
         }
         Node *pt = new Node(key);
-        BSTInsert(this->root, pt);
+        root = BSTInsert(this->root, pt);
         // cout << "new root: " << endl;
         // cout << this->root->key << endl;
     }
@@ -96,13 +96,10 @@ public:
     }
 
     void deleteKey(int key) {
-        deleteNode(root, key);
+        root = deleteNode(root, key);
     }
 
     Node* deleteNode(Node* root, int key) { 
-        if (searchKey(key) == false) {
-            return NULL;
-        }
         if (root == NULL) 
             return root; 
         if (key < root->key) 
@@ -230,24 +227,23 @@ public:
         return -1;
     }
 
-    void postorder() {
-        postorder(root);
+    string postorder() {
+        return postorder(root);
     }
 
-    void postorder(Node *cur) {
+    string postorder(Node *cur) {
         if (cur == NULL) {
-            return;
+            return "";
         }
-        postorder(cur->getLeft());
-        postorder(cur->getRight());
-        cout << cur->getKey() << " ";
+        return postorder(cur->getLeft()) + postorder(cur->getRight()) + std::to_string(cur->getKey()) + " ";
     }
 
-    void levelorder() {
+    string levelorder() {
+        string output = "";
         vector<vector<Node*>> curList;
         curList.resize(0);
         if (root == NULL) {
-            return;
+            return "";
         }
         vector<Node*> fl;
         fl.resize(0);
@@ -270,9 +266,10 @@ public:
         }
         for (int i = 0; i < curList.size(); i++) {
             for (int j = 0; j < curList[i].size(); j++) {
-                cout << curList[i][j]->key << " "; 
+                output += to_string(curList[i][j]->key) + " "; 
             }
         }
+        return output;
     }
 
     int LCA(int key1, int key2) {
