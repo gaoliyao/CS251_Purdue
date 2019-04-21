@@ -35,7 +35,35 @@ void part1(ifstream &inputfile, ofstream &outputfile)
  // Part 2 :  Find a ticket using Dijkstra  
 void part2(ifstream &inputfile, ofstream &outputfile)
 {
-
+    cout << "123" << endl;;
+    int numVer = 0;
+    inputfile >> numVer;
+    int numEdg = 0;
+    inputfile >> numEdg;
+    Graph graph = Graph(numVer, numEdg);
+    cout << "234" << endl;
+    while (numEdg--) {
+        string fir = "";
+        inputfile >> fir;
+        string sec = "";
+        inputfile >> sec;
+        double weight = 0;
+        inputfile >> weight;
+        graph.addRoute(fir, sec, weight);
+    }
+    graph.print();
+    while (true) {
+        string fir = "";
+        inputfile >> fir;
+        if (fir == "END") {
+            break;
+        }
+        else {
+            string sec = "";
+            inputfile >> sec;
+            graph.findCost(fir, sec);
+        }
+    }
 }
 
  // Part 3 :Try to do a tour of all cities 

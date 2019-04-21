@@ -57,7 +57,8 @@ class Graph
 		
 		
 		// Part 2: Find a ticket using Dijkstra	
-		void findCost(const string &source, const string &destination);         
+		void findCost(const string &source, const string &destination);
+		double dijk(int src, int B);      
 		
 		// Part 3: Try to do a tour of all cities
 		void eulerianTour(int);  // NOTE : If necessary, you can change the parameters to this function.

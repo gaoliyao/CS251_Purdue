@@ -179,3 +179,50 @@ void Graph::findEdges() {
 		}
 	}
 }
+
+// Prints shortest paths from src to all other vertices 
+double Graph::dijk(int A, int B) {
+  int n = adjList.size();
+  vector<double> dist(n);
+  vector<bool> vis(n);
+ 
+  for(int i = 0; i < n; ++i) {
+    dist[i] = INFI;
+  }
+  dist[A] = 0.0;
+ 
+  for(int i = 0; i < n; ++i) {
+    int cur = -1;
+    for(int j = 0; j < n; ++j) {
+      if (vis[j]) continue;
+      if (cur == -1 || dist[j] < dist[cur]) {
+        cur = j;
+      }
+    }
+ 
+    vis[cur] = true;
+    for(int j = 0; j < adjList[cur].size(); ++j) {
+	  int index = adjList[cur][j];
+      double path = dist[cur] + weights[cur][j];
+      if (path < dist[index]) {
+        dist[index] = path;
+      }
+    }
+  }
+ 
+  return dist[B];
+}
+
+void Graph::findCost(const string &source, const string &destination) {
+	int sourId = -1;
+	int desId = -1;
+	for (int i = 0; i < cities.size(); i++) {
+		if (cities[i] == source) {
+			sourId = i;
+		}
+		if (cities[i] == destination) {
+			desId = i;
+		}
+	}
+	cout << dijk(sourId, desId) << endl;
+}
