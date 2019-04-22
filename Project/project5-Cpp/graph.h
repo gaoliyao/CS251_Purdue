@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <algorithm>
+#include <iomanip>
 
 using namespace std;
 
@@ -26,9 +28,7 @@ using namespace std;
 class Graph
 {
 	private:
-		int numCities;
 		int numRoutes;
-		vector<string> cities;
 		vector<vector<int>> adjList;
 		vector<vector<double>> weights;
 		vector<bool> visited;
@@ -40,11 +40,20 @@ class Graph
 		vector<int> tree;
 		int disct = 0;
 		stack<int> s;
-		vector<int> arr; // cut edges
+		
 		
 		
 	public:
-		
+		int numCities;
+		vector<string> circuit;
+		double resultCost = -1.0;
+		vector<bool> visitedDFS;
+		int connCompNum = 1;
+		vector<int> arr; // cut edges
+		vector<string> cities;
+		vector<int> previousVertex;
+		vector<string> shortestPath;
+
 		Graph(int, int); 
 		// Create the graph
 		void addRoute(string, string, double);	
@@ -61,7 +70,9 @@ class Graph
 		double dijk(int src, int B);      
 		
 		// Part 3: Try to do a tour of all cities
-		void eulerianTour(int);  // NOTE : If necessary, you can change the parameters to this function.
+		void eulerianTour(string);  // NOTE : If necessary, you can change the parameters to this function.
+		void tour(vector<int> parent, int root);
+
 
 		void print();  // NOTE : If necessary, you can change the parameters to this function.
 

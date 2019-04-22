@@ -38,7 +38,10 @@ Graph::Graph(int Vertices, int routes)
 {
 	numCities = Vertices;
 	numRoutes = routes;
+	visitedDFS.assign(numCities, false);
+	circuit.resize(0);
 	cities.resize(0);
+	shortestPath.resize(0);
 	adjList.resize(numCities);
 	weights.resize(numCities);
 	for (int i = 0; i < numCities; i++) {
@@ -125,11 +128,24 @@ void Graph::search() {
 	evalFunc.resize(numCities + 1);
 	tree.resize(numCities + 1);
 	visited.assign(numCities + 1, false);
+
 	for (int i = 0; i < numCities; i++) {
 		if (!visited[i]) {
 			tree[i] = i;
 			connected++;
 			DFS(i);
+			bool isAllVisited = true;
+			for (int j = 0; j < numCities; j++) {
+				if (visitedDFS[j] == false) {
+					isAllVisited = false;
+				}
+			}
+			if (isAllVisited) {
+				break;
+			}
+			else {
+				connCompNum++;
+			}
 		}
 	}
 }
@@ -137,9 +153,9 @@ void Graph::search() {
 void Graph::DFS(int p) {
 	s.push(p);
 	while (!s.empty()) {
-		cout << "123" << endl;
 		p = s.top();
 		s.pop();
+		visitedDFS[p] = true;
 		if (!visited[p]) {
 			visited[p] = true;
 			disct++;
@@ -173,9 +189,16 @@ void Graph::DFS(int p) {
 void Graph::findEdges() {
 	for (int i = 0; i < numCities + 1; i++) {
 		if (evalFunc[i] > evalFunc[tree[i]]) {
-			arr.push_back(tree[i]);
-			arr.push_back(i);
-			cout << cities[tree[i]] << " " << cities[i] << endl;
+			if (cities[tree[i]] < cities[i]) {
+				arr.push_back(tree[i]);
+				arr.push_back(i);
+				cout << cities[tree[i]] << " " << cities[i] << endl;
+			}
+			else {
+				arr.push_back(i);
+				arr.push_back(tree[i]);
+				cout << cities[i] << " " << cities[tree[i]] << endl;
+			}
 		}
 	}
 }
@@ -206,16 +229,32 @@ double Graph::dijk(int A, int B) {
       double path = dist[cur] + weights[cur][j];
       if (path < dist[index]) {
         dist[index] = path;
+				previousVertex[index] = cur;
       }
     }
   }
- 
+	vector<int> pathId;
+	pathId.resize(0);
+	int cur = B;
+	while (cur != A) {
+		pathId.push_back(cur);
+		cur = previousVertex[cur];
+	}
+	pathId.push_back(cur);
+	reverse(pathId.begin(), pathId.end());
+	for (int i = 0; i < pathId.size(); i++) {
+		shortestPath.push_back(cities[pathId[i]]);
+	}
   return dist[B];
 }
 
 void Graph::findCost(const string &source, const string &destination) {
 	int sourId = -1;
 	int desId = -1;
+	shortestPath.resize(0);
+	previousVertex.resize(0);
+	previousVertex.assign(numCities, -1);
+	shortestPath.resize(0);
 	for (int i = 0; i < cities.size(); i++) {
 		if (cities[i] == source) {
 			sourId = i;
@@ -224,5 +263,70 @@ void Graph::findCost(const string &source, const string &destination) {
 			desId = i;
 		}
 	}
-	cout << dijk(sourId, desId) << endl;
+	double k = dijk(sourId, desId);
+	if (k == INFI) {
+		resultCost = -1;
+	}
+	else{
+		resultCost = k;
+	}
+}
+
+void Graph::eulerianTour(string startV) {
+	int s = -1;
+	for (int i = 0; i < cities.size(); i++) {
+		if (cities[i] == startV) {
+			s = i;
+		}
+	}
+	vector<bool> visited(numCities);
+	vector<int> parent(numCities);
+	vector<double> minKey(numCities);
+	visited.assign(numCities, false);
+	parent.assign(numCities, -1);
+	minKey.assign(numCities, INFI);
+
+	minKey[s] = 0;
+	parent[s] = -1;
+	cout << s << endl;
+
+	for (int i = 0; i < numCities - 1; i++) {
+		int min = INFI;
+		int minId = -1;
+		for (int j = 0; j < numCities; j++) {
+			if (visited[j] == false && minKey[j] < min) {
+				minId = j;
+				min = minKey[j];
+			}
+		}
+		visited[minId] = true;
+		for (int j = 0; j < adjList[minId].size(); j++) {
+			if (visited[adjList[minId][j]] == false && weights[minId][j] < minKey[adjList[minId][j]]) {
+				parent[adjList[minId][j]] = minId;
+				minKey[adjList[minId][j]] = weights[minId][j];
+			}
+		}
+	}
+	tour(parent, s);
+}
+
+void Graph::tour(vector<int> parent, int root) {
+	circuit.push_back(cities[root]);
+	vector<string> childs;
+	for (int i = 0; i < numCities; i++) {
+		if (parent[i] == root) {
+			childs.push_back(cities[i]);
+		}
+	}
+	sort(childs.begin(), childs.end());
+	for (int i = 0; i < childs.size(); i++) {
+		int id = -1;
+		for (int j = 0; j < numCities; j++) {
+			if (cities[j] == childs[i]) {
+				id = j;
+				break;
+			}
+		}
+		tour(parent, id);
+	}
 }
